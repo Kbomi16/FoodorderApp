@@ -1,5 +1,5 @@
 import classes from './MealItem.module.css'
-
+import MealItemForm from './MealItemForm'
 
 const MealItem = props => {
   const price = `${props.price}원`
@@ -15,7 +15,7 @@ const MealItem = props => {
 
       {/* 수량 */}
       <div>
-
+        <MealItemForm id={props.id} />
       </div>
     </li>
   )
