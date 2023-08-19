@@ -5,7 +5,7 @@ import classes from './Modal.module.css';
 
 // 팝업창이 떴을 때, 뒷부분을 어둡게 가리는 레이어
 const Backdrop = (props) => {
-  return <div className={classes.backdrop} />
+  return <div className={classes.backdrop} onClick={props.onCloseCart}/>
 }
 
 // 장바구니를 보여주는 팝업창
@@ -23,7 +23,7 @@ const portalElement = document.getElementById('overlays')
 const Modal = (props) => {
   return (
     <Fragment>
-      {ReactDOM.createPortal(<Backdrop />, portalElement)}
+      {ReactDOM.createPortal(<Backdrop onCloseCart={props.onClose}/>, portalElement)}
       {ReactDOM.createPortal(
         <ModalOverlay>{props.children}</ModalOverlay>,
         portalElement
