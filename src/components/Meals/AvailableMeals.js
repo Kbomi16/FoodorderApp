@@ -1,37 +1,72 @@
+import { useEffect, useState } from 'react';
+
 import classes from './AvailableMeals.module.css'
 import Card from '../UI/Card'
 import MealItem from './MealItem/MealItem';
 
-// 음식배열
-const DUMMY_MEALS = [
-  {
-    id: 'm1',
-    name: '캐슈 국물 떡국',
-    description: '사골 대신 캐슈 드슈!',
-    price: 11000,
-  },
-  {
-    id: 'm2',
-    name: '비건 라따뚜이',
-    description: ' 프랑스식 채소 스튜 라따뚜이',
-    price: 15000,
-  },
-  {
-    id: 'm3',
-    name: '두부 동그랑땡',
-    description: '색도 맛도 예쁜!',
-    price: 8000,
-  },
-  {
-    id: 'm4',
-    name: '채소 전골',
-    description: ' 채소와 다시마가 우러난 전골의 따듯하고 담백한 맛',
-    price: 19000,
-  },
-];
-
 const AvailableMeals = () => {
-  const mealsList = DUMMY_MEALS.map(meal => 
+  const [meals, setMeals] = useState([])
+  const [isLoading, setIsLoading] = useState(true)
+  const [httpError, setHttpError] = useState(null)
+
+  useEffect(() => {
+    const fetchMeals = async () => {
+      setIsLoading(true)
+
+      const response = await fetch('https://foodorderapp-48c1e-default-rtdb.firebaseio.com/meals.json')
+      
+      // 오류났을 때
+      if(!response.ok) {
+        throw new Error('알 수 없는 오류가 발생했습니다!')
+      }
+      
+      const responseData = await response.json()
+
+      const loadedMeals = []
+
+      for(const key in responseData) {
+        loadedMeals.push({
+          // key는 개별 meals의 id
+          id: key,
+          name: responseData[key].name,
+          description: responseData[key].description,
+          price: responseData[key].price          
+        })
+      }
+      setMeals(loadedMeals)
+      setIsLoading(false)
+    } 
+
+    // try {
+    //   fetchMeals()
+    // } catch(error) {
+    //   setIsLoading(false)
+    //   setHttpError(error.message)
+    // }
+    fetchMeals().catch(error => {
+      setIsLoading(false)
+      setHttpError(error.message)
+    })
+  }, [])
+
+  // meals를 매핑하기전에 확인
+  if(isLoading) {
+    return (
+    <section className={classes.MealsLoading}>
+      <p>Loading...</p>
+    </section>
+    )
+  }
+
+  if(httpError) {
+    return(
+      <section className={classes.MealsLoading}>
+      <p>{httpError}</p>
+    </section>
+    )
+  }
+
+  const mealsList = meals.map(meal => 
     <MealItem
     id={meal.id}
     key={meal.id}
