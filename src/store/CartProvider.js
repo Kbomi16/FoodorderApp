@@ -66,6 +66,11 @@ const cartReducer = (state, action) => {
     };
   }
 
+  // 주문 완료 후 장바구니 비우기
+  if(action.type === "CLEAR") {
+    return defaultCartState
+  }
+
   return defaultCartState;
 };
 
@@ -83,11 +88,17 @@ const CartProvider = (props) => {
     dispatchCartAction({ type: 'REMOVE', id: id });
   };
 
+  // 주문 완료 후 장바구니 비우기
+  const clearCartHandler = () => {
+    dispatchCartAction({type : 'CLEAR'})
+  }
+
   const cartContext = {
     items: cartState.items,
     totalAmount: cartState.totalAmount,
     addItem: addItemToCartHandler,
     removeItem: removeItemFromCartHandler,
+    clearCart: clearCartHandler
   };
 
   return (

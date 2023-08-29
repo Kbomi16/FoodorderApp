@@ -21,6 +21,7 @@ const Checkout = props => {
   const demandInputRef = useRef()
 
   // 입력된 값들을 참조를 통해 가져와 유효성을 검사하고, 검사 결과에 따라 에러 표시를 업데이트하고 주문을 확인
+  // onConfirm
   const confirmHandler = (event) => {
     event.preventDefault();
 
@@ -47,7 +48,9 @@ const Checkout = props => {
     if(!formIsValid) {
       return
     }
+
     props.onConfirm({
+      // userData
       name: enteredName,
       address: enteredAddress,
       phone: enteredPhone,
