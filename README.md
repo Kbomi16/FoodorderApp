@@ -1,6 +1,7 @@
 ## 프로젝트 정보
 - 음식 주문 앱
 - 음식 수량을 정하고 카트에 담을 수 있다.
+- React
 - https://saber-lip-4c8.notion.site/FoododerApp-2330086212bc444ea3c2791a6ab296ae?pvs=4
 
 ### 1일차
